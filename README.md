@@ -6,6 +6,8 @@
 
 Bindings to [LAME](https://lame.sourceforge.io/)
 
+This is static only build with bundled version 3.100 (latest as of 2022/12/08)
+
 ## Features
 
 - `decoder` - Enables MPG library decoding under GPL;

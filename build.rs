@@ -28,12 +28,12 @@ fn build() {
 //On unix targets we just rely on autotools to figure shit out
 #[cfg(windows)]
 fn build() {
-    const INCLUDE_MSVC: &str = "include_msvc";
+    const INCLUDE_MSVC: &str = ".include_msvc";
 
     let lame_dir = std::path::Path::new(LAME_DIR);
     //copy config.h
-    let _ = std::fs::create_dir(lame_dir.join(INCLUDE_MSVC));
-    std::fs::copy(lame_dir.join("configMS.h"), lame_dir.join(INCLUDE_MSVC).join("config.h")).expect("Copy config.h");
+    let _ = std::fs::create_dir(&INCLUDE_MSVC);
+    std::fs::copy(lame_dir.join("configMS.h"), std::path::Path::new(INCLUDE_MSVC).join("config.h")).expect("Copy config.h");
 
     let mut cc = cc::Build::new();
     cc.warnings(false)
@@ -59,7 +59,7 @@ fn build() {
       .file(lame_dir.join("libmp3lame/VbrTag.c"))
       .file(lame_dir.join("libmp3lame/version.c"))
       .include(lame_dir.join("include"))
-      .include(lame_dir.join(INCLUDE_MSVC))
+      .include(INCLUDE_MSVC)
       .include(lame_dir.join("libmp3lame"))
       .define("TAKEHIRO_IEEE754_HACK", None)
       .define("FLOAT8", Some("float"))

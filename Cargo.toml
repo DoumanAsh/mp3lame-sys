@@ -2,13 +2,14 @@
 name = "mp3lame-sys"
 version = "0.1.0"
 edition = "2021"
+repository = "https://github.com/DoumanAsh/mp3lame-sys"
 description = "Bindings to mp3lame library"
 keywords = ["lame", "mp3", "mp3lame", "libmp3lame", "codec"]
 categories = ["encoding", "external-ffi-bindings", "multimedia::audio", "multimedia::encoding"]
-license = "LGPL"
+license = "LGPL-3.0"
 include = [
-    "src/*rs",
-    "lame-3.100/",
+    "src/**",
+    "lame-3.100/**",
     "Cargo.toml",
     "README.md",
     "LICENSE"
