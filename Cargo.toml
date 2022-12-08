@@ -1,0 +1,33 @@
+[package]
+name = "mp3lame-sys"
+version = "0.1.0"
+edition = "2021"
+description = "Bindings to mp3lame library"
+license = "LGPL"
+include = [
+    "src/*rs",
+    "lame-3.100/",
+    "Cargo.toml",
+    "README.md",
+    "LICENSE"
+]
+
+[dependencies.libc]
+version = "0.2"
+default-features = false
+
+[build-dependencies.bindgen]
+version = "0.63"
+optional = true
+
+[target.'cfg(unix)'.build-dependencies.autotools]
+version = "0.2.5"
+
+[target.'cfg(windows)'.build-dependencies.cc]
+version = "1.0.77"
+
+[features]
+# Used internally to generate lib.rs
+build-bindgen = ["bindgen"]
+# Include decoer code (it is under GPL license which is pretty shite)
+decoder = []
