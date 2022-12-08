@@ -3,6 +3,8 @@ name = "mp3lame-sys"
 version = "0.1.0"
 edition = "2021"
 description = "Bindings to mp3lame library"
+keywords = ["lame", "mp3", "mp3lame", "libmp3lame", "codec"]
+categories = ["encoding", "external-ffi-bindings", "multimedia::audio", "multimedia::encoding"]
 license = "LGPL"
 include = [
     "src/*rs",
@@ -16,10 +18,6 @@ include = [
 version = "0.2"
 default-features = false
 
-[build-dependencies.bindgen]
-version = "0.63"
-optional = true
-
 [target.'cfg(unix)'.build-dependencies.autotools]
 version = "0.2.5"
 
@@ -27,7 +25,8 @@ version = "0.2.5"
 version = "1.0.77"
 
 [features]
-# Used internally to generate lib.rs
-build-bindgen = ["bindgen"]
-# Include decoer code (it is under GPL license which is pretty shite)
+# Include decoder code (it is under GPL license which is pretty shite)
 decoder = []
+
+[package.metadata.docs.rs]
+features = ["decoder"]

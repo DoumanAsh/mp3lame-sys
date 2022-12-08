@@ -1,61 +1,5 @@
 const LAME_DIR: &str = "lame-3.100";
 
-#[cfg(feature = "build-bindgen")]
-fn generate_bindings() {
-    use std::path::PathBuf;
-
-    #[derive(Debug)]
-    struct ParseCallbacks;
-
-    impl bindgen::callbacks::ParseCallbacks for ParseCallbacks {
-        fn int_macro(&self, name: &str, _value: i64) -> Option<bindgen::callbacks::IntKind> {
-            if name.starts_with("OPUS") {
-                Some(bindgen::callbacks::IntKind::Int)
-            } else {
-                None
-            }
-        }
-    }
-
-    const PREPEND_LIB: &'static str = "
-#![no_std]
-#![allow(non_upper_case_globals)]
-#![allow(non_camel_case_types)]
-#![allow(non_snake_case)]
-";
-
-    let mut out = PathBuf::new();
-    out.push("src");
-    out.push("lib.rs");
-    let mut lame_header = PathBuf::new();
-    lame_header.push(LAME_DIR);
-    lame_header.push("include");
-    lame_header.push("lame.h");
-
-    let bindings = bindgen::Builder::default().header(lame_header.display().to_string())
-                                              .raw_line(PREPEND_LIB)
-                                              .parse_callbacks(Box::new(ParseCallbacks))
-                                              .generate_comments(false)
-                                              .layout_tests(false)
-                                              .ctypes_prefix("libc")
-                                              .constified_enum_module("*")
-                                              .allowlist_function("lame.+")
-                                              .allowlist_var("lame.+")
-                                              .allowlist_function("hip.+")
-                                              .allowlist_var("hip.+")
-                                              .allowlist_function("id3tag.+")
-                                              .allowlist_var("id3tag.+")
-                                              .use_core()
-                                              .generate()
-                                              .expect("Unable to generate bindings");
-
-    bindings.write_to_file(out).expect("Couldn't write bindings!");
-}
-
-#[cfg(not(feature = "build-bindgen"))]
-fn generate_bindings() {
-}
-
 #[cfg(unix)]
 fn build() {
     let mut config = autotools::Config::new(LAME_DIR);
@@ -161,8 +105,6 @@ fn main() {
         //skip docs.rs build
         return;
     }
-
-    generate_bindings();
 
     build();
 }
