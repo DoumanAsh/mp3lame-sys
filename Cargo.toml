@@ -1,6 +1,6 @@
 [package]
 name = "mp3lame-sys"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 repository = "https://github.com/DoumanAsh/mp3lame-sys"
 description = "Bindings to mp3lame library"
@@ -12,7 +12,8 @@ include = [
     "lame-3.100/**",
     "Cargo.toml",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "build.rs"
 ]
 
 [dependencies.libc]
