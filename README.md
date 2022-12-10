@@ -13,3 +13,8 @@ There is safe and convenient wrapper over it: https://github.com/DoumanAsh/mp3la
 ## Features
 
 - `decoder` - Enables MPG library decoding under GPL;
+
+## License
+
+LAME library is under LGPL License.
+Hence this crate is licensed under the same shitty license
