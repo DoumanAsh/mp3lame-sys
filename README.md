@@ -8,6 +8,8 @@ Bindings to [LAME](https://lame.sourceforge.io/)
 
 This is static only build with bundled version 3.100 (latest as of 2022/12/08)
 
+There is safe and convenient wrapper over it: https://github.com/DoumanAsh/mp3lame-encoder
+
 ## Features
 
 - `decoder` - Enables MPG library decoding under GPL;
