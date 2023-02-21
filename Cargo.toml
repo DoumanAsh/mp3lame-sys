@@ -1,6 +1,6 @@
 [package]
 name = "mp3lame-sys"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 repository = "https://github.com/DoumanAsh/mp3lame-sys"
 description = "Bindings to mp3lame library"
@@ -21,7 +21,7 @@ version = "0.2"
 default-features = false
 
 [target.'cfg(unix)'.build-dependencies.autotools]
-version = "0.2.5"
+version = "0.2.6"
 
 [target.'cfg(windows)'.build-dependencies.cc]
 version = "1.0.77"

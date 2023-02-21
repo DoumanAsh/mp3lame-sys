@@ -9,6 +9,10 @@ fn build() {
     #[cfg(not(feature = "decoder"))]
     config.disable("decoder", None);
 
+    if let Ok(override_host) = std::env::var("MP3LAME_SYS_OVERRIDE_HOST") {
+        config.config_option("host", Some(override_host.as_str()));
+    }
+
     let res = config.disable_shared()
                     .enable_static()
                     .disable("rpath", None)

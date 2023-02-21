@@ -14,6 +14,10 @@ There is safe and convenient wrapper over it: https://github.com/DoumanAsh/mp3la
 
 - `decoder` - Enables MPG library decoding under GPL;
 
+## Env variables
+
+- `MP3LAME_SYS_OVERRIDE_HOST` - Specifies override for `host` option within configure.
+
 ## License
 
 LAME library is under LGPL License.
