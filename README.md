@@ -13,6 +13,7 @@ There is safe and convenient wrapper over it: https://github.com/DoumanAsh/mp3la
 ## Features
 
 - `decoder` - Enables MPG library decoding under GPL;
+- `target_host` - Overrides `host` option with `TARGET` for purpose of compiling C code in case of cross-compilation.
 
 ## Env variables
 

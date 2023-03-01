@@ -58,6 +58,8 @@ jobs:
       run: |
         cargo --version
         rustc --version
+    - name: Check with target-host
+      run: cargo check --features target_host
     - name: Check no features
       run: cargo check
     - name: Check with decoder
@@ -87,6 +89,6 @@ jobs:
         curl -L https://github.com/cross-rs/cross/releases/download/v0.2.4/cross-x86_64-unknown-linux-musl.tar.gz | tar xfz -
         cp cross $HOME/.cargo/bin
     - name: Test ${{ matrix.target }}
-      run: cross check
+      run: cross check --features target_host
     - name: Test ${{ matrix.target }} with decoder
       run: cross check --features decoder

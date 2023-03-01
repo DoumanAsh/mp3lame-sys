@@ -9,8 +9,19 @@ fn build() {
     #[cfg(not(feature = "decoder"))]
     config.disable("decoder", None);
 
+    let host = std::env::var("HOST").expect("To have env:HOST");
+    let target = std::env::var("TARGET").expect("To have env:TARGET");
     if let Ok(override_host) = std::env::var("MP3LAME_SYS_OVERRIDE_HOST") {
         config.config_option("host", Some(override_host.as_str()));
+    } else if host != target {
+        #[cfg(not(feature = "target_host"))]
+        {
+            println!("cargo:warning=Cross-compilation may not be supported");
+        }
+        #[cfg(feature = "target_host")]
+        {
+            config.config_option("host", Some(target.as_str()));
+        }
     }
 
     let res = config.disable_shared()

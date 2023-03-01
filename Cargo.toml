@@ -29,6 +29,9 @@ version = "1.0.77"
 [features]
 # Include decoder code (it is under GPL license which is pretty shite)
 decoder = []
+# Adjusts `HOST` when compiling C library to triplet in `TARGET`
+# Only relevant on unix systems
+target_host = []
 
 [package.metadata.docs.rs]
 features = ["decoder"]
