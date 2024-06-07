@@ -717,7 +717,7 @@ lame_report_def(const char *format, va_list args)
     fflush(stderr); /* an debug function should flush immediately */
 }
 
-void 
+void
 lame_report_fnc(lame_report_function print_f, const char *format, ...)
 {
     if (print_f) {
@@ -911,7 +911,7 @@ disable_FPE(void)
         mask &= ~(_EM_OVERFLOW | _EM_ZERODIVIDE | _EM_INVALID);
         _FPU_SETCW(mask);
     }
-# elif defined(__linux__)
+# elif defined(__linux__) && !defined(__ANDROID__)
     {
 
 #  include <fpu_control.h>
@@ -922,7 +922,7 @@ disable_FPE(void)
 #  define _FPU_SETCW(cw) __asm__ ("fldcw %0" : : "m" (*&cw))
 #  endif
 
-        /* 
+        /*
          * Set the Linux mask to abort on most FPE's
          * if bit is set, we _mask_ SIGFPE on that error!
          *  mask &= ~( _FPU_MASK_IM | _FPU_MASK_ZM | _FPU_MASK_OM | _FPU_MASK_UM );

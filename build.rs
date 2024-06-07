@@ -1,3 +1,5 @@
+#![allow(clippy::single_match)]
+
 const LAME_DIR: &str = "lame-3.100";
 
 #[cfg(unix)]
@@ -22,6 +24,11 @@ fn build() {
         {
             config.config_option("host", Some(target.as_str()));
         }
+    }
+
+    //Android cross compilation may require this flag
+    if target.contains("android") {
+        config.cflag("-DSTDC_HEADERS");
     }
 
     let res = config.disable_shared()
