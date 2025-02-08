@@ -18,7 +18,12 @@ fn build() {
     } else if host != target {
         #[cfg(not(feature = "target_host"))]
         {
-            println!("cargo:warning=Cross-compilation may not be supported");
+            if target.contains("android") {
+                //Assume cross-compilation for android target
+                config.config_option("host", Some(target.as_str()));
+            } else {
+                println!("cargo:warning=Cross-compilation may not be supported");
+            }
         }
         #[cfg(feature = "target_host")]
         {
