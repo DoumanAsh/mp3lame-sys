@@ -1,6 +1,6 @@
 [package]
 name = "mp3lame-sys"
-version = "0.1.6"
+version = "0.1.7"
 edition = "2021"
 repository = "https://github.com/DoumanAsh/mp3lame-sys"
 description = "Bindings to mp3lame library"
