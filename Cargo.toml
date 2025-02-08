@@ -16,6 +16,10 @@ include = [
     "build.rs"
 ]
 
+# DO NOT PUBLISH FROM windows
+# It will screw permissions of configure script
+publish = false
+
 [dependencies.libc]
 version = "0.2"
 default-features = false
