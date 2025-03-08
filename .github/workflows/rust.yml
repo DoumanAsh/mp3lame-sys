@@ -11,6 +11,7 @@ on:
       - 'lame-*/**.h'
       - 'tests/**'
       - 'Cargo.toml'
+      - 'build.rs'
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     branches:
@@ -22,6 +23,7 @@ on:
       - 'lame-*/**.h'
       - 'tests/**'
       - 'Cargo.toml'
+      - 'build.rs'
 
 jobs:
   test:
