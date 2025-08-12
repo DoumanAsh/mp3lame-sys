@@ -21,13 +21,13 @@ fn build() {
             if target.contains("android") {
                 //Assume cross-compilation for android target
                 config.config_option("host", Some(target.as_str()));
-            } else if target.contains("ios") {
+            } else if target.contains("apple") {
                 if target.starts_with("aarch64") {
                     config.config_option("host", Some("arm-apple-darwin"));
                 } else if target.starts_with("x86_64") {
                     config.config_option("host", Some("x86_64-apple-darwin"));
                 } else {
-                    println!("cargo:warning=Unsupported IOS target");
+                    println!("cargo:warning=Unsupported Apple target");
                 }
             } else {
                 println!("cargo:warning=Cross-compilation may not be supported");
