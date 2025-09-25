@@ -24,73 +24,36 @@ on:
       - 'tests/**'
       - 'Cargo.toml'
       - 'build.rs'
-
 jobs:
-  test:
+  check:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-
-    runs-on: ${{ matrix.os }}
     if: github.event.pull_request.draft == false
-    steps:
-    - uses: actions/checkout@v1
+    uses: DoumanAsh/douman-ci/.github/workflows/rust.yml@master
+    with:
+      runs-on: ${{ matrix.os }}
+      cargo-no-features: true
+      cargo-features: "target_host,decoder"
 
-    - name: Install Rust Unix
-      if: runner.os != 'Windows'
-      run: |
-        if rustup --version >/dev/null 2>&1; then
-            rustup update
-        else
-             curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal --default-toolchain stable
-             echo ::add-path::$HOME/.cargo/bin
-        fi
-    - name: Install Rust Windows
-      if: runner.os == 'Windows'
-      run: |
-        if (Get-Command "rustup" -ErrorAction SilentlyContinue) {
-            rustup update
-        } else {
-            Invoke-WebRequest https://static.rust-lang.org/rustup/dist/i686-pc-windows-gnu/rustup-init.exe -OutFile rustup-init.exe
-            ./rustup-init.exe -y --profile minimal --default-toolchain stable
-            echo ::add-path::%USERPROFILE%\.cargo\bin
-        }
-
-    - name: Rust version
-      run: |
-        cargo --version
-        rustc --version
-    - name: Check with target-host
-      run: cargo check --features target_host
-    - name: Check no features
-      run: cargo check
-    - name: Check with decoder
-      run: cargo test --features decoder
-
-  cross-compilation-test:
-    needs: test
-    runs-on: ubuntu-latest
+  cross-platform-test:
+    needs: [check]
     if: github.event.pull_request.draft == false
     strategy:
       matrix:
-        target: ["aarch64-unknown-linux-musl", "aarch64-unknown-linux-gnu", "arm-unknown-linux-musleabi"]
+        target: [
+          "arm-unknown-linux-musleabi",
+          "i586-unknown-linux-musl",
+          "powerpc-unknown-linux-gnu",
+          "aarch64-unknown-linux-musl",
+          "aarch64-unknown-linux-gnu",
+          # Current cross cannot link libunwind
+          # https://github.com/cross-rs/cross/issues/1222
+          #"aarch64-linux-android",
+        ]
 
-    steps:
-    - uses: actions/checkout@v1
-
-    - name: Install Rust Unix
-      run: |
-        if rustup --version >/dev/null 2>&1; then
-            rustup update
-        else
-             curl https://sh.rustup.rs -sSf | sh -s -- -y --profile minimal --default-toolchain stable
-             echo ::add-path::$HOME/.cargo/bin
-        fi
-    - name: Install Cross
-      run: |
-        curl -L https://github.com/cross-rs/cross/releases/download/v0.2.4/cross-x86_64-unknown-linux-musl.tar.gz | tar xfz -
-        cp cross $HOME/.cargo/bin
-    - name: Test ${{ matrix.target }}
-      run: cross check --features target_host
-    - name: Test ${{ matrix.target }} with decoder
-      run: cross check --features decoder
+    uses: DoumanAsh/douman-ci/.github/workflows/cross-rust.yml@master
+    with:
+      cargo-target: ${{ matrix.target }}
+      cargo-no-features: true
+      cargo-features: "target_host,decoder"
