@@ -40,7 +40,7 @@ fn build() {
     }
 
     //Android cross compilation may require this flag
-    if target.contains("android") {
+    if target.contains("android") || target.contains("ios") {
         config.cflag("-DSTDC_HEADERS");
     }
 

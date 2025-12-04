@@ -1,6 +1,6 @@
 [package]
 name = "mp3lame-sys"
-version = "0.1.10"
+version = "0.1.11"
 edition = "2021"
 repository = "https://github.com/DoumanAsh/mp3lame-sys"
 description = "Bindings to mp3lame library"
@@ -18,7 +18,7 @@ include = [
 
 # DO NOT PUBLISH FROM windows
 # It will screw permissions of configure script
-publish = false
+publish = true
 
 [dependencies.libc]
 version = "0.2"
