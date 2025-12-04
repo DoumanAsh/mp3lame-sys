@@ -18,7 +18,7 @@ include = [
 
 # DO NOT PUBLISH FROM windows
 # It will screw permissions of configure script
-publish = true
+publish = false
 
 [dependencies.libc]
 version = "0.2"
