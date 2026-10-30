@@ -102,7 +102,6 @@ fn build() {
       .define("REAL_IS_FLOAT", Some("1"))
       .define("BS_FORMAT", Some("BINARY"))
       .define("HAVE_CONFIG_H", None)
-      .shared_flag(false)
       .pic(false)
       .warnings(false);
 
