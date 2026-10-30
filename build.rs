@@ -1,6 +1,6 @@
 #![allow(clippy::single_match)]
 
-const LAME_DIR: &str = "lame-3.100";
+const LAME_DIR: &str = "lame-4.0";
 
 #[cfg(unix)]
 fn build() {
@@ -10,6 +10,7 @@ fn build() {
     config.enable("decoder", None);
     #[cfg(not(feature = "decoder"))]
     config.disable("decoder", None);
+    config.disable("frontend", None);
 
     let host = std::env::var("HOST").expect("To have env:HOST");
     let target = std::env::var("TARGET").expect("To have env:TARGET");

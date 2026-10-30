@@ -40,8 +40,8 @@ fn should_test_version() {
         version.assume_init()
     };
 
-    assert_eq!(version.major, 3);
-    assert_eq!(version.minor, 100);
+    assert_eq!(version.major, 4);
+    assert_eq!(version.minor, 0);
 }
 
 
