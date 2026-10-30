@@ -223,46 +223,6 @@ extern "C" {
     pub fn lame_close(arg1: *mut lame_global_flags) -> libc::c_int;
 }
 
-#[cfg(feature = "decoder")]
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct hip_global_struct {
-    _unused: [u8; 0],
-}
-#[cfg(feature = "decoder")]
-pub type hip_global_flags = hip_global_struct;
-#[cfg(feature = "decoder")]
-pub type hip_t = *mut hip_global_flags;
-#[cfg(feature = "decoder")]
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct mp3data_struct {
-    pub header_parsed: libc::c_int,
-    pub stereo: libc::c_int,
-    pub samplerate: libc::c_int,
-    pub bitrate: libc::c_int,
-    pub mode: libc::c_int,
-    pub mode_ext: libc::c_int,
-    pub framesize: libc::c_int,
-    pub nsamp: libc::c_ulong,
-    pub totalframes: libc::c_int,
-    pub framenum: libc::c_int,
-}
-
-#[cfg(feature = "decoder")]
-extern "C" {
-    pub fn hip_decode_init() -> hip_t;
-    pub fn hip_decode_exit(gfp: hip_t) -> libc::c_int;
-    pub fn hip_set_errorf(gfp: hip_t, f: lame_report_function);
-    pub fn hip_set_debugf(gfp: hip_t, f: lame_report_function);
-    pub fn hip_set_msgf(gfp: hip_t, f: lame_report_function);
-    pub fn hip_decode(gfp: hip_t, mp3buf: *mut libc::c_uchar, len: usize, pcm_l: *mut libc::c_short, pcm_r: *mut libc::c_short) -> libc::c_int;
-    pub fn hip_decode_headers(gfp: hip_t, mp3buf: *mut libc::c_uchar, len: usize, pcm_l: *mut libc::c_short, pcm_r: *mut libc::c_short, mp3data: *mut mp3data_struct) -> libc::c_int;
-    pub fn hip_decode1(gfp: hip_t, mp3buf: *mut libc::c_uchar, len: usize, pcm_l: *mut libc::c_short, pcm_r: *mut libc::c_short) -> libc::c_int;
-    pub fn hip_decode1_headers(gfp: hip_t, mp3buf: *mut libc::c_uchar, len: usize, pcm_l: *mut libc::c_short, pcm_r: *mut libc::c_short, mp3data: *mut mp3data_struct) -> libc::c_int;
-    pub fn hip_decode1_headersB(gfp: hip_t, mp3buf: *mut libc::c_uchar, len: usize, pcm_l: *mut libc::c_short, pcm_r: *mut libc::c_short, mp3data: *mut mp3data_struct, enc_delay: *mut libc::c_int, enc_padding: *mut libc::c_int) -> libc::c_int;
-}
-
 extern "C" {
     pub fn id3tag_genre_list(handler: ::core::option::Option<unsafe extern "C" fn(arg1: libc::c_int, arg2: *const libc::c_char, arg3: *mut libc::c_void)>, cookie: *mut libc::c_void);
     pub fn id3tag_init(gfp: lame_t);

@@ -6,9 +6,6 @@ const LAME_DIR: &str = "lame-4.0";
 fn build() {
     let mut config = autotools::Config::new(LAME_DIR);
 
-    #[cfg(feature = "decoder")]
-    config.enable("decoder", None);
-    #[cfg(not(feature = "decoder"))]
     config.disable("decoder", None);
     config.disable("frontend", None);
 
@@ -108,21 +105,6 @@ fn build() {
       .shared_flag(false)
       .pic(false)
       .warnings(false);
-
-    #[cfg(feature = "decoder")]
-    {
-        cc.define("HAVE_MPGLIB", None)
-          .include(lame_dir.join("mpglib"))
-          .file(lame_dir.join("mpglib/common.c"))
-          .file(lame_dir.join("mpglib/dct64_i386.c"))
-          .file(lame_dir.join("mpglib/decode_i386.c"))
-          .file(lame_dir.join("mpglib/interface.c"))
-          .file(lame_dir.join("mpglib/layer1.c"))
-          .file(lame_dir.join("mpglib/layer2.c"))
-          .file(lame_dir.join("mpglib/layer3.c"))
-          .file(lame_dir.join("mpglib/tabinit.c"))
-          .file(lame_dir.join("libmp3lame/mpglib_interface.c"));
-    }
 
     if let Ok(compiler) = std::env::var("CC") {
         let compiler = std::path::Path::new(&compiler);
