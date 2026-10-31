@@ -10,15 +10,6 @@ This is static only build with bundled version 4.0 (latest as of 2026/07)
 
 There is safe and convenient wrapper over it: https://github.com/DoumanAsh/mp3lame-encoder
 
-## Features
-
-- `target_host` - Overrides `host` option with `TARGET` for purpose of compiling C code in case of cross-compilation.
-
-## Env variables
-
-- `MP3LAME_SYS_OVERRIDE_HOST` - Specifies override for `host` option within configure.
-
 ## License
 
-LAME library is under LGPL License.
-Hence this crate is licensed under the same shitty license
+LAME library is under LGPL License hence this crate is under the same license.
