@@ -29,13 +29,16 @@
 # define HAVE_SYS_TYPES_H     1
 # define HAVE_ALLOCA_H        1
 # define HAVE_DLFCN_H         1
+# define HAVE_ICONV           1
 #endif
 
 /* ------------------------------------------------------------------ */
 /*  Fixed-width integer types – prefer <stdint.h>                      */
 /* ------------------------------------------------------------------ */
 
+#ifndef HAVE_STDINT_H
 #define HAVE_STDINT_H 1
+#endif
 
 #if defined(HAVE_STDINT_H) && HAVE_STDINT_H
 # include <stdint.h>
@@ -52,6 +55,7 @@
 #define HAVE_UINT64_T  1
 
 /* Safety fallbacks (should never be needed with a C99+ compiler) */
+#ifndef HAVE_STDINT_H
 #ifndef int8_t
   typedef signed char          int8_t;
 #endif
@@ -76,6 +80,7 @@
 #ifndef uint64_t
   typedef unsigned long long   uint64_t;
 #endif
+#endif /* HAVE_STDINT_H */
 
 /* ------------------------------------------------------------------ */
 /*  IEEE floating-point types                                          */

@@ -4,64 +4,6 @@ use std::env;
 
 const LAME_DIR: &str = "lame-4.0";
 
-#[cfg(unix)]
-fn build() {
-    let mut config = autotools::Config::new(LAME_DIR);
-
-    config.disable("decoder", None);
-    config.disable("frontend", None);
-
-    let host = env::var("HOST").expect("To have env:HOST");
-    let target = env::var("TARGET").expect("To have env:TARGET");
-    if let Ok(override_host) = env::var("MP3LAME_SYS_OVERRIDE_HOST") {
-        config.config_option("host", Some(override_host.as_str()));
-    } else if host != target {
-        #[cfg(not(feature = "target_host"))]
-        {
-            if target.contains("android") {
-                //Assume cross-compilation for android target
-                config.config_option("host", Some(target.as_str()));
-            } else if target.contains("apple") {
-                if target.starts_with("aarch64") {
-                    config.config_option("host", Some("arm-apple-darwin"));
-                } else if target.starts_with("x86_64") {
-                    config.config_option("host", Some("x86_64-apple-darwin"));
-                } else {
-                    println!("cargo:warning=Unsupported Apple target");
-                }
-            } else {
-                println!("cargo:warning=Cross-compilation may not be supported");
-            }
-        }
-        #[cfg(feature = "target_host")]
-        {
-            config.config_option("host", Some(target.as_str()));
-        }
-    }
-
-    //Android cross compilation may require this flag
-    if target.contains("android") || target.contains("ios") {
-        config.cflag("-DSTDC_HEADERS");
-    }
-
-    let res = config.disable_shared()
-                    .enable_static()
-                    .disable("rpath", None)
-                    .disable("frontend", None)
-                    .disable("gtktest", None)
-                    .with("pic", None)
-                    .fast_build(true)
-                    .build();
-
-    //libraries are installed in <out>/lib
-    println!("cargo:rustc-link-search=native={}/lib", res.display());
-    println!("cargo:rustc-link-lib=static=mp3lame");
-}
-
-//On windows we cannot just use `nmake` as VS solution there doesn't have x64 files
-//so instead just directly compile it.
-//On unix targets we just rely on autotools to figure shit out
-#[cfg(windows)]
 fn build() {
     let lame_dir = std::path::Path::new(LAME_DIR);
     let mut cc = cc::Build::new();
@@ -90,7 +32,6 @@ fn build() {
       .include(lame_dir.join("include"))
       .include(lame_dir.join("libmp3lame"))
       .define("HAVE_CONFIG_H", None)
-      .pic(false)
       .warnings(false);
 
     let target = env::var("TARGET").expect("To have env:TARGET");
@@ -98,6 +39,11 @@ fn build() {
     if target.contains("x86_64") {
         cc.file(lame_dir.join("libmp3lame/vector/xmm_quantize_sub.c"))
           .define("MIN_ARCH_SSE", None);
+    }
+
+    //Android cross compilation may require this flag
+    if target.contains("android") || target.contains("ios") {
+        cc.define("STDC_HEADERS", None);
     }
 
     if let Ok(compiler) = env::var("CC") {

@@ -16,21 +16,5 @@ include = [
     "build.rs"
 ]
 
-# DO NOT PUBLISH FROM windows
-# It will screw permissions of configure script
-publish = false
-
-[dependencies.libc]
-version = "0.2"
-default-features = false
-
-[target.'cfg(unix)'.build-dependencies.autotools]
-version = "0.2.6"
-
-[target.'cfg(windows)'.build-dependencies.cc]
+[build-dependencies.cc]
 version = "1.0.77"
-
-[features]
-# Adjusts `HOST` when compiling C library to triplet in `TARGET`
-# Only relevant on unix systems
-target_host = []

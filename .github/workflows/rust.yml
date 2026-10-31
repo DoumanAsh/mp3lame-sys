@@ -33,8 +33,6 @@ jobs:
     uses: DoumanAsh/douman-ci/.github/workflows/rust.yml@master
     with:
       runs-on: ${{ matrix.os }}
-      cargo-no-features: true
-      cargo-features: "target_host"
 
   cross-platform-test:
     needs: [check]
@@ -55,5 +53,3 @@ jobs:
     uses: DoumanAsh/douman-ci/.github/workflows/cross-rust.yml@master
     with:
       cargo-target: ${{ matrix.target }}
-      cargo-no-features: true
-      cargo-features: "target_host"
