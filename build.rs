@@ -63,16 +63,7 @@ fn build() {
 //On unix targets we just rely on autotools to figure shit out
 #[cfg(windows)]
 fn build() {
-    const INCLUDE_MSVC: &str = ".include_msvc";
-
-    //fucking cargo and its annoying treatment of file modifications of crate
-    let out_dir = env::var("OUT_DIR").expect("OUT_DIR is not set by retarded cargo");
     let lame_dir = std::path::Path::new(LAME_DIR);
-    let include_msvc = std::path::Path::new(&out_dir).join(INCLUDE_MSVC);
-    //copy config.h
-    let _ = std::fs::create_dir(&include_msvc);
-    std::fs::copy(lame_dir.join("configMS.h"), include_msvc.join("config.h")).expect("Copy config.h");
-
     let mut cc = cc::Build::new();
     cc.warnings(false)
       .extra_warnings(false)
@@ -95,13 +86,9 @@ fn build() {
       .file(lame_dir.join("libmp3lame/vbrquantize.c"))
       .file(lame_dir.join("libmp3lame/VbrTag.c"))
       .file(lame_dir.join("libmp3lame/version.c"))
+      .include("src/include")
       .include(lame_dir.join("include"))
-      .include(&include_msvc)
       .include(lame_dir.join("libmp3lame"))
-      .define("TAKEHIRO_IEEE754_HACK", None)
-      .define("FLOAT8", Some("float"))
-      .define("REAL_IS_FLOAT", Some("1"))
-      .define("BS_FORMAT", Some("BINARY"))
       .define("HAVE_CONFIG_H", None)
       .pic(false)
       .warnings(false);
