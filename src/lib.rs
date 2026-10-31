@@ -52,7 +52,7 @@ pub struct lame_version_t {
     pub features: *const ::core::ffi::c_char,
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn lame_init() -> *mut lame_global_flags;
     pub fn lame_set_num_samples(arg1: *mut lame_global_flags, arg2: ::core::ffi::c_ulong) -> ::core::ffi::c_int;
     pub fn lame_get_num_samples(arg1: *const lame_global_flags) -> ::core::ffi::c_ulong;
@@ -222,10 +222,12 @@ extern "C" {
     pub fn lame_close(arg1: *mut lame_global_flags) -> ::core::ffi::c_int;
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn id3tag_genre_list(handler: ::core::option::Option<unsafe extern "C" fn(arg1: ::core::ffi::c_int, arg2: *const ::core::ffi::c_char, arg3: *mut ::core::ffi::c_void)>, cookie: *mut ::core::ffi::c_void);
     pub fn id3tag_init(gfp: lame_t);
     pub fn id3tag_add_v2(gfp: lame_t);
+    pub fn id3tag_add_v2_4_UTF8(gfp: lame_t);
+    pub fn id3tag_v2_4_UTF8_only(gfp: lame_t);
     pub fn id3tag_v1_only(gfp: lame_t);
     pub fn id3tag_v2_only(gfp: lame_t);
     pub fn id3tag_space_v1(gfp: lame_t);
@@ -249,6 +251,8 @@ extern "C" {
     pub fn id3tag_set_fieldvalue_utf16(gfp: lame_t, fieldvalue: *const ::core::ffi::c_ushort) -> ::core::ffi::c_int;
     pub fn id3tag_set_textinfo_utf16(gfp: lame_t, id: *const ::core::ffi::c_char, text: *const ::core::ffi::c_ushort) -> ::core::ffi::c_int;
     pub fn id3tag_set_comment_utf16(gfp: lame_t, lang: *const ::core::ffi::c_char, desc: *const ::core::ffi::c_ushort, text: *const ::core::ffi::c_ushort) -> ::core::ffi::c_int;
+    pub fn id3tag_set_textinfo_utf8(gfp: lame_t, id: *const ::core::ffi::c_char, text: *const ::core::ffi::c_char) -> ::core::ffi::c_int;
+    pub fn id3tag_set_comment_utf8(gfp: lame_t, lang: *const ::core::ffi::c_char, desc: *const ::core::ffi::c_char, text: *const ::core::ffi::c_char) -> ::core::ffi::c_int;
     pub fn lame_get_bitrate(mpeg_version: ::core::ffi::c_int, table_index: ::core::ffi::c_int) -> ::core::ffi::c_int;
     pub fn lame_get_samplerate(mpeg_version: ::core::ffi::c_int, table_index: ::core::ffi::c_int) -> ::core::ffi::c_int;
 }
