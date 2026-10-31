@@ -33,6 +33,7 @@ jobs:
     uses: DoumanAsh/douman-ci/.github/workflows/rust.yml@master
     with:
       runs-on: ${{ matrix.os }}
+      min-rustc-version: "1.85.0"
 
   cross-platform-test:
     needs: [check]
