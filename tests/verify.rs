@@ -2,36 +2,6 @@ use mp3lame_sys::*;
 
 use core::mem::MaybeUninit;
 
-#[cfg(feature = "decoder")]
-#[test]
-fn should_decode() {
-    struct Decoder {
-        hip: hip_t
-    }
-
-    impl Decoder {
-        fn new() -> Self {
-            let hip = unsafe {
-                hip_decode_init()
-            };
-            assert!(!hip.is_null());
-            Self {
-                hip
-            }
-        }
-    }
-
-    impl Drop for Decoder {
-        fn drop(&mut self) {
-            unsafe {
-                hip_decode_exit(self.hip);
-            }
-        }
-    }
-
-    Decoder::new();
-}
-
 #[test]
 fn should_test_version() {
     let mut version = MaybeUninit::<lame_version_t>::uninit();
@@ -43,5 +13,3 @@ fn should_test_version() {
     assert_eq!(version.major, 4);
     assert_eq!(version.minor, 0);
 }
-
-

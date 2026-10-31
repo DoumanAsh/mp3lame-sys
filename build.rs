@@ -1,5 +1,7 @@
 #![allow(clippy::single_match)]
 
+use std::env;
+
 const LAME_DIR: &str = "lame-4.0";
 
 #[cfg(unix)]
@@ -9,9 +11,9 @@ fn build() {
     config.disable("decoder", None);
     config.disable("frontend", None);
 
-    let host = std::env::var("HOST").expect("To have env:HOST");
-    let target = std::env::var("TARGET").expect("To have env:TARGET");
-    if let Ok(override_host) = std::env::var("MP3LAME_SYS_OVERRIDE_HOST") {
+    let host = env::var("HOST").expect("To have env:HOST");
+    let target = env::var("TARGET").expect("To have env:TARGET");
+    if let Ok(override_host) = env::var("MP3LAME_SYS_OVERRIDE_HOST") {
         config.config_option("host", Some(override_host.as_str()));
     } else if host != target {
         #[cfg(not(feature = "target_host"))]
@@ -64,7 +66,7 @@ fn build() {
     const INCLUDE_MSVC: &str = ".include_msvc";
 
     //fucking cargo and its annoying treatment of file modifications of crate
-    let out_dir = std::env::var("OUT_DIR").expect("OUT_DIR is not set by retarded cargo");
+    let out_dir = env::var("OUT_DIR").expect("OUT_DIR is not set by retarded cargo");
     let lame_dir = std::path::Path::new(LAME_DIR);
     let include_msvc = std::path::Path::new(&out_dir).join(INCLUDE_MSVC);
     //copy config.h
@@ -84,7 +86,6 @@ fn build() {
       .file(lame_dir.join("libmp3lame/presets.c"))
       .file(lame_dir.join("libmp3lame/psymodel.c"))
       .file(lame_dir.join("libmp3lame/quantize_pvt.c"))
-      .file(lame_dir.join("libmp3lame/vector/xmm_quantize_sub.c"))
       .file(lame_dir.join("libmp3lame/quantize.c"))
       .file(lame_dir.join("libmp3lame/reservoir.c"))
       .file(lame_dir.join("libmp3lame/set_get.c"))
@@ -105,7 +106,14 @@ fn build() {
       .pic(false)
       .warnings(false);
 
-    if let Ok(compiler) = std::env::var("CC") {
+    let target = env::var("TARGET").expect("To have env:TARGET");
+    //Only x64 guarantees SSE2 availability
+    if target.contains("x86_64") {
+        cc.file(lame_dir.join("libmp3lame/vector/xmm_quantize_sub.c"))
+          .define("MIN_ARCH_SSE", None);
+    }
+
+    if let Ok(compiler) = env::var("CC") {
         let compiler = std::path::Path::new(&compiler);
         let compiler = compiler.file_stem().expect("To have file name in CC").to_str().unwrap();
         match compiler {
