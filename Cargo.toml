@@ -1,6 +1,6 @@
 [package]
 name = "mp3lame-sys"
-version = "0.1.11"
+version = "0.2.0"
 edition = "2024"
 rust-version = "1.85"
 repository = "https://github.com/DoumanAsh/mp3lame-sys"
