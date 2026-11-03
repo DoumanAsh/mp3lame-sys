@@ -1,7 +1,8 @@
 [package]
 name = "mp3lame-sys"
 version = "0.1.11"
-edition = "2021"
+edition = "2024"
+rust-version = "1.85"
 repository = "https://github.com/DoumanAsh/mp3lame-sys"
 description = "Bindings to mp3lame library"
 keywords = ["lame", "mp3", "mp3lame", "libmp3lame", "codec"]
@@ -9,33 +10,12 @@ categories = ["encoding", "external-ffi-bindings", "multimedia::audio", "multime
 license = "LGPL-3.0"
 include = [
     "src/**",
-    "lame-3.100/**",
+    "lame-4.0/**",
     "Cargo.toml",
     "README.md",
     "LICENSE",
     "build.rs"
 ]
 
-# DO NOT PUBLISH FROM windows
-# It will screw permissions of configure script
-publish = false
-
-[dependencies.libc]
-version = "0.2"
-default-features = false
-
-[target.'cfg(unix)'.build-dependencies.autotools]
-version = "0.2.6"
-
-[target.'cfg(windows)'.build-dependencies.cc]
+[build-dependencies.cc]
 version = "1.0.77"
-
-[features]
-# Include decoder code (it is under GPL license which is pretty shite)
-decoder = []
-# Adjusts `HOST` when compiling C library to triplet in `TARGET`
-# Only relevant on unix systems
-target_host = []
-
-[package.metadata.docs.rs]
-features = ["decoder"]
